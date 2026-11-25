@@ -1,0 +1,28 @@
+{% extends  "Tusk/base.html"%}
+
+{% block title %} Главная {% endblock %}
+
+{% block content %}
+    <ul>
+        <div class="row">
+        {% for tusk in tusks %}
+            <div class="col-md-4 md-3">
+
+            <li> <b>{{tusk.title}}</b>  - {{tusk.target}}: {{tusk.importance}} </li>
+        {% if tusk.is_completed %}
+            <span style="color:green;"><b>Решенно</b></span>
+        {% else %}
+            <span style="color:red;"><b>Не решенно</b> </span>
+        {% endif %}
+        <p><a href="{% url 'add' %}" class="btn btn-success">Добавить задачу</a> </p>
+        <p><a href="{% url 'edit' tusk.id %}" class="btn btn-warning"> Редактировать</a> </p>
+        <p><a href="{% url 'delete' tusk.id %}" class="btn btn-danger">Удалить</a> </p>
+        </div>
+            </div>
+        {% endfor %}
+
+    </ul>
+
+
+
+{% endblock %}

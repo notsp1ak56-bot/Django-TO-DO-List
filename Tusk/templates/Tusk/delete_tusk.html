@@ -1,0 +1,13 @@
+{% extends "Tusk/base.html" %}
+
+{% block title %}Удаление задача{% endblock %}
+
+{% block content %}
+  <h2>Вы точно хотите удалить эту здачу ?</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">удалить</button>
+    <button> <a href="{% url 'main' %}">вернуться</a> </button>
+  </form>
+{% endblock %}
