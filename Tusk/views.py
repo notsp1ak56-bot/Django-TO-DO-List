@@ -1,15 +1,20 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from  django.contrib.auth.models import User
 from .models import *
 from .forms import *
 from  django.shortcuts import *
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import CreateView
 # Create your views here.
 
 # Создаем тут функцию которая базу данных и вынимает из нее все
+@login_required
 def main(request):
-    data_center = Tusks.objects.all()
+    data_center = Tusks.objects.filter( owner = request.user)
     #  тут создаем словарь потому что  метод render принимает  ключ значение поэтому зарание запехнули его  в словарь
     data = {
         "tusks":data_center
@@ -62,4 +67,51 @@ def delete_tusk(request, tusk_id):
         return redirect('main')
 
     return render(request, "Tusk/delete_tusk.html", {"tusks": tusks})
+# создаем функцию профиль
+def profile(request):
+    # берем именно те данные что лежат у пользователя
+    task = Tusks.objects.filter(owner = request.user)
+    # просто общее количество
+    total_task = task.count()
+    #  не решенные задачи фильтруем смопощью метода филтер  и выыводим его количество
+    unresolved = task.filter(is_completed = False).count()
+    # с этим методом так же
+    done_task = task.filter(is_completed = True).count()
+
+    data = {
+        "task":task,
+        "total_task": total_task,
+        "unresolved":unresolved,
+        "done_task": done_task
+
+    }
+
+    return render(request, "Tusk/profile.html", data)
+# отмечаем задачу что решенна
+def coplete_tusk(request , tusk_id):
+    tusk = get_object_or_404( Tusks,owner = request.user  ,id = tusk_id)
+    # пишем что
+    tusk.is_completed = not tusk.is_completed
+
+    tusk.save()
+    return redirect('main')
+#сделать функцию
+#def  search(request):
+
+# сделать сортировку по важности задачи
+#def важность(request):
+
+# сделать что бы страницы листались
+#def  page_move(request):
+
+#надо как то сделать что бы важность как регулировалась по важности высокий приотет средний и низки !!!!!!!!!!
+
+# cоздаем форму регестриции
+class SingnUpwiew(CreateView):
+    # создаем  форму как раз
+    form_class = UserCreationForm
+    # после регистрации куда возращяем
+    success_url = reverse_lazy('login')
+    #  и сылка грубо говоря на   html файл с регистрацией
+    template_name = 'registration/signup.html'
 

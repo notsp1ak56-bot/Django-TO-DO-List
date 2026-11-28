@@ -1,0 +1,14 @@
+{% extends  "Tusk/base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+    <h2>Войти в акаунт</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <button type="submit">Войти</button>
+    </form>
+    <p><a href="{% url 'singup' %}">Зарегайтесь если нет еще акаунта</a> </p>
+{% endblock %}

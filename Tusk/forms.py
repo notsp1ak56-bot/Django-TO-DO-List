@@ -5,4 +5,4 @@ from .models import Tusks
 class TuskForm(forms.ModelForm):
     class Meta :
         model = Tusks
-        fields = ['title', 'target', 'is_completed' , 'importance']
+        fields = ['title', 'target',  'importance']

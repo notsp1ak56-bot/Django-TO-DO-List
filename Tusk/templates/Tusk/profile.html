@@ -1,0 +1,16 @@
+{% extends "Tusk/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{%  block content %}
+    <h3>{{user.username}}</h3>
+
+    <p> Количество всех задач: <b>{{total_task}}</b></p>
+    <p> Количество решенных задач: <b>{{done_task}}</b></p>
+    <p> Количесто не решенных задач <b>{{unresolved}}</b> </p>
+
+    <form action="{% url 'logout' %}" method="POST" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class=" btn btn-danger" >Выйти</button>
+    </form>
+{% endblock %}

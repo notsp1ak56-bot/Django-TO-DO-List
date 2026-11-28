@@ -23,4 +23,5 @@ from Tusk.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Tusk.urls')),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
